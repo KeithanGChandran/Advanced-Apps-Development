@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginStart="35dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="35dp"
+        android:textSize="15sp"
+        android:id="@+id/infusion_date" />
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:textSize="15sp"
+        android:id="@+id/infusion_dose" />
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:textSize="15sp"
+        android:id="@+id/infusion_type" />
+    <TextView
+        android:layout_marginLeft="30dp"
+        android:layout_width="100dp"
+        android:layout_height="25dp"
+        android:textSize="15sp"
+        android:id="@+id/infusion_description"/>
+
+</LinearLayout>
