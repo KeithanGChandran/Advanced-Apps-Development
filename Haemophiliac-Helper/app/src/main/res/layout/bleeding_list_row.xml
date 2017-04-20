@@ -9,24 +9,16 @@
         android:layout_height="25dp"
         android:layout_marginLeft="35dp"
         android:textSize="15sp"
-        android:id="@+id/infusion_date" />
+        android:id="@+id/bleeding_date" />
     <TextView
         android:layout_width="50dp"
         android:layout_height="25dp"
         android:textSize="15sp"
-        android:id="@+id/infusion_dose" />
+        android:id="@+id/bleeding_part" />
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="25dp"
         android:textSize="15sp"
-        android:id="@+id/infusion_type" />
-    <!---
-    <TextView
-        android:layout_marginLeft="30dp"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        android:textSize="15sp"
-        android:id="@+id/infusion_description"/>
-        -->
+        android:id="@+id/bleeding_condition" />
 
 </LinearLayout>

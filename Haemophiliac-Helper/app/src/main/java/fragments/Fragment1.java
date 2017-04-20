@@ -149,15 +149,9 @@ public class Fragment1 extends ListFragment {
             }
         }
 
-        //get the number of records in database
-        int j = 0;
-        for (int i = 0; i < date.length; i++) {
-            if (date[i] != null)
-                j += 1;
-        }
         if (infusionRecordList.isEmpty()){
             //and then show lines(add record from array to listView).
-            for (int k = 0; k<j; k++){
+            for (int k = 0; k<countArray(); k++){
                 InfusionRecord infusionRecord = new InfusionRecord(date[k],dose[k],type[k],description[k]);
                 infusionRecord.setID(ID[k]);
                 infusionRecordList.add(infusionRecord);
@@ -247,6 +241,7 @@ public class Fragment1 extends ListFragment {
         setNotificationBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                if (countArray() != 0) {
                 try {
                     //get next Injection date
                     Calendar cal=getNextDate(lastDateString,frequency);
@@ -269,6 +264,8 @@ public class Fragment1 extends ListFragment {
                 }
             }catch (ParseException e){
                 e.printStackTrace();}
+            }
+            else    Toast.makeText(getContext(), "Please add new record", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -404,4 +401,13 @@ public class Fragment1 extends ListFragment {
         cal.add(Calendar.DATE, frequency);
         return cal;
     }
+
+    //get the number of records in database
+    public int countArray(){
+        int j = 0;
+        for (int i = 0; i < date.length; i++) {
+            if (date[i] != null)
+                j += 1;
+        }
+    return j;}
 }
