@@ -19,6 +19,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String InfCOL_3 = "Dose";
     public static final String InfCOL_4 = "TypeOfTreatment";
     public static final String InfCOL_5 = "Description";
+    public static final String BldCOL_1 = "ID";
+    public static final String BldCOL_2 = "Date";
+    public static final String BldCOL_3 = "Part";
+    public static final String BldCOL_4 = "Condition";
+    public static final String BldCOL_5 = "Description";
+    public static final String BldCOL_6 = "Picture";
 
 
     public DataBaseHelper(Context context) {
@@ -27,6 +33,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+        sqLiteDatabase.execSQL("create table " + BleedingTable + " (" + BldCOL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + BldCOL_2 + " TEXT NOT NULL UNIQUE,"
+                + BldCOL_3 + " TEXT, "
+                +BldCOL_4+" TEXT, "
+                +BldCOL_5+" TEXT)"
+        );
         sqLiteDatabase.execSQL("create table " + InfusionTable + " (" + InfCOL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + InfCOL_2 + " TEXT NOT NULL UNIQUE,"
                 + InfCOL_3 + " TEXT, "
@@ -38,6 +51,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InfusionTable);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + BleedingTable);
         onCreate(sqLiteDatabase);
     }
 
@@ -52,6 +66,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean insertBleedingData(String date, String part, int condition, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BldCOL_2, date);
+        contentValues.put(BldCOL_3, part);
+        contentValues.put(BldCOL_4, condition);
+        contentValues.put(BldCOL_5, description);
+        long result = db.insert(BleedingTable, null, contentValues);
+        return result != -1;
+    }
+
     public void deleteData(int ID,String table) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + table + " where ID='" + ID + "'");
@@ -60,7 +85,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //get data and sort them with latest date comes first.
     public Cursor getAllData(String table) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from " + table + " ORDER BY Date desc", null);
-        return res;
+        return db.rawQuery("select * from " + table + " ORDER BY Date desc", null);
     }
 }
