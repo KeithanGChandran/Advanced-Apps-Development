@@ -9,8 +9,11 @@ Indragni Soft Solutions
 https://www.youtube.com/watch?v=luxE7oEKiic
 * */
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +28,9 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ryankeith.haemophiliac_helper.BleedingListAdapter;
@@ -33,6 +38,7 @@ import com.ryankeith.haemophiliac_helper.BleedingRecord;
 import com.ryankeith.haemophiliac_helper.DataBaseHelper;
 import com.ryankeith.haemophiliac_helper.DateDialog;
 import com.ryankeith.haemophiliac_helper.R;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +58,18 @@ public class Fragment2 extends Fragment {
     String[] part = new String[100];
     int[] condition = new int[100];
     String[] description = new String[100];
+    String[] picture = new String[100];
     private List<BleedingRecord> bleedingRecordList = new ArrayList<BleedingRecord>();
     private View tempDialog;
+    private View displayDialog;
     private EditText partTxt;
     private EditText conditionTxt;
     private EditText descriptionTxt;
     private Button pickBtn;
+    private static final int RESULT_LOAD_IMAGE = 1;
+    private static final int RESULT_OK = -1;
+    private Uri selectedImageUri;
+
 
     @Nullable
     @Override
@@ -69,6 +81,9 @@ public class Fragment2 extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        //inflater dialogs
 
         //init Database
         DBHelper = new DataBaseHelper(getContext());
@@ -86,6 +101,7 @@ public class Fragment2 extends Fragment {
                 part[i] = res.getString(2);
                 condition[i] = res.getInt(3);
                 description[i]=res.getString(4);
+                picture[i] = res.getString(5);
             }
         }
 
@@ -106,7 +122,7 @@ public class Fragment2 extends Fragment {
         //and then show lines(add record from array to listView).
         if (bleedingRecordList.isEmpty()){
             for (int k = 0; k < j; k++) {
-                BleedingRecord bleedingRecord = new BleedingRecord(date[k], part[k],condition[k],description[k]);
+                BleedingRecord bleedingRecord = new BleedingRecord(date[k], part[k],condition[k],description[k],picture[k]);
                 bleedingRecord.setID(ID[k]);
                 bleedingRecordList.add(bleedingRecord);
             }}
@@ -122,10 +138,22 @@ public class Fragment2 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 BleedingRecord bleedingRecord = bleedingListAdapter.getItem(i);
-                String descriptionTxt=bleedingRecord.getData("description");
+
+                LayoutInflater in = LayoutInflater.from(getContext());
+                displayDialog = in.inflate(R.layout.bleeding_description_dialog,null);
+                TextView partTxt = (TextView)displayDialog.findViewById(R.id.display_part);
+                partTxt.setText(bleedingRecord.getData("part"));
+                TextView conditionTxt = (TextView)displayDialog.findViewById(R.id.display_condition);
+                conditionTxt.setText(bleedingRecord.getData("condition"));
+                TextView descriptionTxt = (TextView)displayDialog.findViewById(R.id.display_description);
+                descriptionTxt.setText(bleedingRecord.getData("description"));
+                if (bleedingRecord.getData("picture")!=null){
+                ImageView picture = (ImageView)displayDialog.findViewById(R.id.display_picture);
+                picture.setImageURI(Uri.parse(bleedingRecord.getData("picture")));}
+
                 AlertDialog.Builder abuilder = new AlertDialog.Builder(getContext());
-                abuilder.setTitle(bleedingRecord.getData("date")+"      "+bleedingRecord.getData("part"))
-                        .setMessage(descriptionTxt)
+                abuilder.setTitle(bleedingRecord.getData("date"))
+                        .setView(displayDialog)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -168,6 +196,7 @@ public class Fragment2 extends Fragment {
                                 bleedingListAdapter.remove(selecteditem);
                                 DBHelper.getWritableDatabase();
                                 DBHelper.deleteData(selecteditem.getID(),"bleedingTable");
+                                refreshActivity();
                             }
                         }
                         actionMode.finish();
@@ -184,6 +213,16 @@ public class Fragment2 extends Fragment {
         });
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null){
+            selectedImageUri = data.getData();
+            ImageView selectedImageView=(ImageView)tempDialog.findViewById(R.id.selectedImage);
+            selectedImageView.setImageURI(selectedImageUri);
+        } else selectedImageUri=null;
     }
 
     //add record dialog
@@ -207,6 +246,17 @@ public class Fragment2 extends Fragment {
             }
         });
 
+        //select picture
+        Button pickImgBtn=(Button)tempDialog.findViewById(R.id.pickImageBtn);
+        pickImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent,RESULT_LOAD_IMAGE);
+            }
+        });
+
+
         //Add Record Dialog
         AlertDialog.Builder abuilder = new AlertDialog.Builder(getContext());
         abuilder.setTitle("Add New Bleeding Record")
@@ -219,7 +269,10 @@ public class Fragment2 extends Fragment {
                         String date1 = pickBtn.getText().toString();
                         if (date1.equals(getContext().getString(R.string.pick_a_date))) {
                             Toast.makeText(getContext(), "Please pick a date", Toast.LENGTH_SHORT).show();
-                        } else insertData2DB(date1, partTxt.getText().toString(),Integer.parseInt(conditionTxt.getText().toString()),descriptionTxt.getText().toString());
+                        } else if (selectedImageUri==null){
+                            insertData2DB(date1, partTxt.getText().toString(),Integer.parseInt(conditionTxt.getText().toString()),descriptionTxt.getText().toString());
+                        }
+                        else insertData2DB(date1, partTxt.getText().toString(),Integer.parseInt(conditionTxt.getText().toString()),descriptionTxt.getText().toString(),selectedImageUri.toString());
                         //InsertData2DB(date1, type);
 
                     }
@@ -234,12 +287,26 @@ public class Fragment2 extends Fragment {
 
     }
 
-    public void insertData2DB(String date, String part,int condition,String description) {
-        DBHelper.insertBleedingData(date, part,condition,description);
+    public void insertData2DB(String date, String part,int condition,String description, String picture) {
+        DBHelper.insertBleedingData(date, part,condition,description, picture);
 
-        BleedingRecord bleedingRecord = new BleedingRecord(date, part,condition,description);
+        BleedingRecord bleedingRecord = new BleedingRecord(date, part,condition,description,picture);
         bleedingRecordList.add(bleedingRecord);
         bleedingListAdapter.notifyDataSetChanged();
-        Toast.makeText(getContext(), "added Record", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Added Bleeding Record", Toast.LENGTH_SHORT).show();
+        refreshActivity();
+    }
+    public void insertData2DB(String date, String part,int condition,String description) {
+        DBHelper.insertBleedingData(date, part,condition,description);
+        BleedingRecord bleedingRecord = new BleedingRecord(date, part,condition,description,null);
+        bleedingRecordList.add(bleedingRecord);
+        bleedingListAdapter.notifyDataSetChanged();
+        Toast.makeText(getContext(), "Added Bleeding Record", Toast.LENGTH_SHORT).show();
+        refreshActivity();
+    }
+
+    public void refreshActivity() {
+        getActivity().finish();
+        startActivity(getActivity().getIntent());
     }
 }

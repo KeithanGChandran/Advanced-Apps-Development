@@ -74,5 +74,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/bleedingDescriptionTxt"/>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pickImageBtn"
+        android:text="upload image"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/title"
+        android:id="@+id/selectedImage"/>
 
 </LinearLayout>

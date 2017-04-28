@@ -9,13 +9,15 @@ public class BleedingRecord {
     private String part;
     private int condition;
     private String description;
+    private String picture;
 
-    public BleedingRecord(String date, String part, int condition, String description) {
+    public BleedingRecord(String date, String part, int condition, String description, String picture) {
         super();
         this.date = date;
         this.part = part;
         this.condition = condition;
         this.description = description;
+        this.picture = picture;
     }
 
     public int getID(){return ID;}
@@ -30,6 +32,8 @@ public class BleedingRecord {
                 return String.valueOf(condition);
             case "description":
                 return description;
+            case "picture":
+                return picture;
         }
         return "";
     }
@@ -44,6 +48,8 @@ public class BleedingRecord {
                 this.part = data;
             case "description":
                 this.description = data;
+            case "picture":
+                this.picture = data;
         }
     }
     public void setData(String dataType, int data){
