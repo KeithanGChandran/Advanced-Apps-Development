@@ -167,7 +167,7 @@ public class Fragment1 extends ListFragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                InfusionRecord infusionRecord = infusionListAdapter.getItem(i);
+                final InfusionRecord infusionRecord = infusionListAdapter.getItem(i);
                 String descriptionTxt = infusionRecord.getData("description");
                 AlertDialog.Builder abuilder = new AlertDialog.Builder(getContext());
                 abuilder.setTitle(infusionRecord.getData("date"))

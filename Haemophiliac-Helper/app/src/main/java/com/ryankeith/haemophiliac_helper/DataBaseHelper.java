@@ -28,23 +28,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     public DataBaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 1);//the last number is the version of database.
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        sqLiteDatabase.execSQL("create table " + BleedingTable + " (" + BldCOL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + BldCOL_2 + " TEXT NOT NULL UNIQUE,"
-                + BldCOL_3 + " TEXT, "
-                +BldCOL_4+" TEXT, "
-                +BldCOL_5+" TEXT)"
-        );
         sqLiteDatabase.execSQL("create table " + InfusionTable + " (" + InfCOL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + InfCOL_2 + " TEXT NOT NULL UNIQUE,"
                 + InfCOL_3 + " TEXT, "
                 +InfCOL_4+" TEXT, "
                 +InfCOL_5+" TEXT)"
+        );
+
+        sqLiteDatabase.execSQL("create table " + BleedingTable + " (" + BldCOL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + BldCOL_2 + " TEXT NOT NULL UNIQUE,"
+                + BldCOL_3 + " TEXT, "
+                +BldCOL_4+" TEXT, "
+                +BldCOL_5+" TEXT, "
+                +BldCOL_6+" TEXT)"
         );
     }
 
@@ -63,6 +65,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(InfCOL_4, type);
         contentValues.put(InfCOL_5, description);
         long result = db.insert(InfusionTable, null, contentValues);
+        return result != -1;
+    }
+
+
+
+    public boolean insertBleedingData(String date, String part, int condition, String description, String picture) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BldCOL_2, date);
+        contentValues.put(BldCOL_3, part);
+        contentValues.put(BldCOL_4, condition);
+        contentValues.put(BldCOL_5, description);
+        contentValues.put(BldCOL_6, picture);
+        long result = db.insert(BleedingTable, null, contentValues);
         return result != -1;
     }
 
@@ -87,4 +103,5 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("select * from " + table + " ORDER BY Date desc", null);
     }
+
 }
