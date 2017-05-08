@@ -16,10 +16,10 @@
             android:text="Date : "/>
         <Button
             android:layout_marginLeft="10dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pick_a_date"
+            android:text= "@string/pick_a_date"
             android:id="@+id/pickDateBtn"/>
     </LinearLayout>
 
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="Dose : "/>
         <EditText
-            android:layout_width="30dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:id="@+id/infusionDoseTxt"/>

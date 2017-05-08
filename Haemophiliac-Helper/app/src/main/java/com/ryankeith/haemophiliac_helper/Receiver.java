@@ -1,5 +1,16 @@
 package com.ryankeith.haemophiliac_helper;
 
+/*
+This is a BroadcastReceiver. When it received an alarm, it will send a notification on top.
+ *  */
+
+/*
+References:
+Android notification at specific date
+Wajdi Hh
+http://stackoverflow.com/questions/9930683/android-notification-at-specific-date
+* */
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
