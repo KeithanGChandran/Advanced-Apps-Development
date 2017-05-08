@@ -101,6 +101,7 @@ public class Fragment4 extends Fragment {
             }
         });
     }
+
     public void saveRecord (String record)
     {
         File file = new File (path + "/"+record+"File.txt");// /infusionFile.txt
@@ -109,9 +110,12 @@ public class Fragment4 extends Fragment {
         DBHelper.getReadableDatabase();
         Cursor res = DBHelper.getAllData(record+"Table"); // infusionTable
         String SumData = "";
+
         if (res.getCount() == 0) {
             Toast.makeText(getContext(), "No Records in Database", Toast.LENGTH_SHORT).show();
-        } else if (record.equals("infusion")) {
+        }
+        else if (record.equals("infusion")) {
+            // get infusion data to data String, and add it on SumData.
             for (int i = 0; i < res.getCount() && i < 100; i++) {
                 res.moveToPosition(i);
                 String data = String.valueOf(res.getString(1) + "  Dose:" + res.getString(2) + "  Type:" + res.getString(3) + "  Description:" + res.getString(4) + "\n");
@@ -120,17 +124,18 @@ public class Fragment4 extends Fragment {
         }
         else {
             for (int i = 0; i < res.getCount() && i < 100; i++) {
+                //get bleeding data
                 res.moveToPosition(i);
                 String data = String.valueOf(res.getString(1) + "  Part:" + res.getString(2) + "  Condition:" + res.getString(3) + "  Description:" + res.getString(4) + "\n");
                 SumData += data;
             }
         }
-        String [] saveText = SumData.split(System.getProperty("line.separator"));
 
+        String [] saveText = SumData.split(System.getProperty("line.separator"));
         Save (file, saveText);
-        //Toast.makeText(getContext(), "Saved!", Toast.LENGTH_LONG).show();
     }
 
+    //from reference [Android - java - Tutorial] How to write and read txt-files from your Android Application
     public static void Save(File file, String[] data)
     {
         FileOutputStream fos = null;
@@ -187,8 +192,11 @@ public class Fragment4 extends Fragment {
                 .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //make file path
                         File fileLocation = new File (path + "/"+record+"File.txt");// /infusionFile.txt
                         Uri filePath = Uri.fromFile(fileLocation);
+
+                        //make email intent
                         Intent emailIntent = new Intent(Intent.ACTION_SEND);
                         emailIntent .setType("vnd.android.cursor.dir/email");
                         emailIntent .putExtra(Intent.EXTRA_EMAIL, recipientTxt.getText().toString());

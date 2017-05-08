@@ -141,9 +141,9 @@ public class Fragment1 extends ListFragment {
                 //set last and next infusion date.
                 res.moveToFirst();
                 lastDateString = res.getString(1);
-                LastDate.setText(lastDateString);
+                LastDate.setText(" "+lastDateString+" ");
                 try {
-                    NextDate.setText(date2String(calendar2Date(getNextDate(lastDateString,frequency))));
+                    NextDate.setText(" "+date2String(calendar2Date(getNextDate(lastDateString,frequency)))+" ");
                 }
                 catch (ParseException e){e.printStackTrace();}
             }

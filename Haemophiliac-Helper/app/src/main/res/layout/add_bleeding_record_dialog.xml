@@ -15,8 +15,8 @@
             android:layout_height="wrap_content"
             android:text="Date : "/>
         <Button
+            android:background="@drawable/back"
             android:layout_marginLeft="10dp"
-            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_a_date"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="Part : "/>
         <EditText
-            android:layout_width="30dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/partTxt"/>
     </LinearLayout>
@@ -43,7 +43,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:padding="10dp">
 
         <TextView
@@ -52,7 +52,7 @@
             android:text="Condition(1-10) : "
             android:layout_gravity="center_vertical" />
         <EditText
-            android:layout_width="30dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:id="@+id/conditionTxt"/>
@@ -75,10 +75,12 @@
             android:id="@+id/bleedingDescriptionTxt"/>
     </LinearLayout>
     <Button
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pickImageBtn"
-        android:text="upload image"/>
+        android:text=" upload image "/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
