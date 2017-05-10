@@ -240,7 +240,8 @@ public class Fragment2 extends Fragment {
         pickBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateDialog dialog = new DateDialog(view);
+                DateDialog dialog = new DateDialog();
+                dialog.setter(view);
                 android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
                 dialog.show(ft, "DatePicker");
             }

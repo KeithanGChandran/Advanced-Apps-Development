@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 /**
@@ -16,7 +18,9 @@ public class DateDialog extends android.support.v4.app.DialogFragment implements
     TextView txtDate;
     String date;
 
-    public DateDialog(View view){
+    public DateDialog(){
+    }
+    public void setter(View view){
         txtDate = (TextView) view;
     }
 
