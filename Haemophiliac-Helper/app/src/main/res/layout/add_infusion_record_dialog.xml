@@ -41,19 +41,16 @@
             android:id="@+id/infusionDoseTxt"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
 
         <TextView
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Type of Treatment : "
             android:layout_gravity="center_vertical" />
 
         <RadioGroup
+            android:padding="10dp"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
@@ -71,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Demand"/>
         </RadioGroup>
-    </LinearLayout>
     <LinearLayout
         android:layout_marginTop="15dp"
         android:padding="10dp"

@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.InputFilter;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import com.ryankeith.haemophiliac_helper.BleedingListAdapter;
 import com.ryankeith.haemophiliac_helper.BleedingRecord;
 import com.ryankeith.haemophiliac_helper.DataBaseHelper;
 import com.ryankeith.haemophiliac_helper.DateDialog;
+import com.ryankeith.haemophiliac_helper.InputFilterMinMax;
 import com.ryankeith.haemophiliac_helper.R;
 
 
@@ -233,6 +235,7 @@ public class Fragment2 extends Fragment {
 
         partTxt=(EditText)tempDialog.findViewById(R.id.partTxt);
         conditionTxt=(EditText)tempDialog.findViewById(R.id.conditionTxt);
+        conditionTxt.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "10")});
         descriptionTxt=(EditText)tempDialog.findViewById(R.id.bleedingDescriptionTxt);
 
         //DatePickerDialog inside this dialog
