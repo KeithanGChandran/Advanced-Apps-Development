@@ -1,7 +1,8 @@
 ![logo](https://lh3.googleusercontent.com/0Ys7Clmx945-x0ijQTkdjRJvmaYeUxtr2OOmYoQFvTR9XoPgUxQF27Fya1gTl8IXxQ=w300-rw " ")
 # Haemophiliac Helper  
 
-SIT305 Advanced-Apps-Development Assignment  
+SIT305 Advanced-Apps-Development Assignment.  
+Made by Renrui Liu 216166456 & Keith G Chandran 213391755
 ***
 An Android medical application for haemophilia patients to record their daily infusion and bleeding activities into tables. And allow them to export the data to their email.  
 ***  
