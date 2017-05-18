@@ -8,11 +8,16 @@ References:
 https://www.youtube.com/watch?v=GxEi_I3tv2k
 * */
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TabHost;
@@ -38,6 +43,25 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         initViewPager();
         initTabHost();
+        isStoragePermissionGranted();
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                System.out.print("Permission is granted");
+                return true;
+            } else {
+                System.out.print("Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            System.out.print("Permission is granted");
+            return true;
+        }
     }
 
     private void initViewPager() {
